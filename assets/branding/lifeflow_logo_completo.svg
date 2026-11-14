@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1254" height="1254" viewBox="0 0 1254 1254" role="img" aria-label="LifeFlow - reloj, infinito, amanecer y marca de verificación">
+<title>LifeFlow</title>
+<desc>Logotipo vectorial sobre fondo transparente. Reloj con arco azul turquesa, sol naranja y cinta de infinito azul violeta con una marca de verificación, sobre el nombre LifeFlow.</desc>
+<defs>
+  <linearGradient id="clock-grad" x1="0" y1="1" x2="1" y2="0" objectBoundingBox="true">
+    <stop offset="0" stop-color="#583FE2"/><stop offset=".34" stop-color="#1370E8"/><stop offset=".65" stop-color="#08B5E5"/><stop offset="1" stop-color="#21E3C9"/>
+  </linearGradient>
+  <linearGradient id="left-loop" x1="0" y1=".8" x2="1" y2=".2" objectBoundingBox="true">
+    <stop offset="0" stop-color="#913BFF"/><stop offset=".46" stop-color="#4261FA"/><stop offset="1" stop-color="#02BDF3"/>
+  </linearGradient>
+  <linearGradient id="ribbon-grad" x1="0" y1=".15" x2="1" y2=".95" objectBoundingBox="true">
+    <stop offset="0" stop-color="#7948EF"/><stop offset=".30" stop-color="#128CFF"/><stop offset=".6" stop-color="#11C9EE"/><stop offset="1" stop-color="#06DFC5"/>
+  </linearGradient>
+  <linearGradient id="right-loop" x1="0" y1="1" x2="1" y2="0" objectBoundingBox="true">
+    <stop offset="0" stop-color="#074890"/><stop offset=".50" stop-color="#006C9F"/><stop offset="1" stop-color="#11D7C8"/>
+  </linearGradient>
+  <linearGradient id="sun-grad" x1="0" y1="1" x2="1" y2="0" objectBoundingBox="true"><stop offset="0" stop-color="#FF5542"/><stop offset=".58" stop-color="#FF9E2A"/><stop offset="1" stop-color="#FFD342"/></linearGradient>
+  <linearGradient id="word-dark" x1="0" y1="1" x2="1" y2="0" objectBoundingBox="true"><stop offset="0" stop-color="#091D44"/><stop offset=".6" stop-color="#102B55"/><stop offset="1" stop-color="#143968"/></linearGradient>
+  <linearGradient id="word-cyan" x1="0" y1="1" x2="1" y2="0" objectBoundingBox="true"><stop offset="0" stop-color="#0382C4"/><stop offset=".55" stop-color="#00AFCE"/><stop offset="1" stop-color="#02DAD1"/></linearGradient>
+</defs>
+
+<g id="simbolo-lifeflow">
+ <!-- Arco de reloj, azul violeta-turquesa -->
+ <path d="M 397 503 C 370 427 401 325 474 263 C 550 193 657 189 736 228 C 791 254 822 296 839 352" fill="none" stroke="url(#clock-grad)" stroke-width="86" stroke-linecap="round"/>
+ <!-- Agujas -->
+ <path d="M 609 338 L 609 450 L 670 496" fill="none" stroke="#102852" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+ <!-- Amanecer -->
+ <g stroke="#FF9B20" stroke-width="19" stroke-linecap="round">
+   <path d="M 855 326 L 877 292"/><path d="M 899 343 L 927 322"/><path d="M 920 390 L 949 390"/>
+ </g>
+ <circle cx="821" cy="391" r="65" fill="url(#sun-grad)" stroke="white" stroke-width="17"/>
+ <!-- Asa izquierda de infinito con su hueco interior vectorial -->
+ <path fill-rule="evenodd" fill="url(#left-loop)" d="M 377 484 C 311 507 263 576 267 651 C 272 726 332 781 405 782 C 488 786 546 737 610 663 C 571 621 546 593 506 550 C 461 498 425 468 377 484 Z M 404 578 C 370 574 345 603 345 638 C 345 676 367 693 402 696 C 449 700 483 661 497 638 C 463 602 439 574 404 578 Z"/>
+ <!-- Cuerpo derecho en forma de gota ovalada, bajo el extremo de la cinta -->
+ <path d="M 621 628 C 679 535 741 470 817 456 C 908 439 973 506 990 580 C 1015 683 947 751 867 776 C 770 808 691 762 621 682 C 605 663 605 652 621 628 Z" fill="url(#right-loop)" stroke="white" stroke-width="20" stroke-linejoin="round"/>
+ <!-- Trazo blanco de la orilla superior izquierda -->
+ <path d="M 329 541 C 381 475 450 482 509 525 C 569 571 603 630 654 673" fill="none" stroke="#FFFFFF" stroke-width="113" stroke-linecap="round"/>
+ <!-- Cinta principal turquesa que une ambos lados -->
+ <path d="M 329 541 C 381 475 450 482 509 525 C 569 571 610 658 697 721 C 781 789 889 794 945 715" fill="none" stroke="url(#ribbon-grad)" stroke-width="86" stroke-linecap="round"/>
+ <!-- Marca de verificación de la zona derecha -->
+ <path d="M 787 605 L 829 647 L 915 550" fill="none" stroke="#FFFFFF" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g id="nombre-lifeflow">
+    <path aria-label="L" fill="url(#word-dark)" d="M80 0H1138V352H496V1490H80Z" transform="translate(80.000 1115) scale(0.12697680 -0.12697680)"/>
+    <path aria-label="i" fill="url(#word-dark)" d="M86 0H486V1056H86ZM285 1126C410 1126 498 1206 498 1319C498 1431 410 1510 285 1510C160 1510 72 1431 72 1319C72 1206 160 1126 285 1126Z" transform="translate(229.579 1115) scale(0.12697680 -0.12697680)"/>
+    <path aria-label="f" fill="url(#word-dark)" d="M832 1056H614V1080C614 1157 643 1186 722 1186H832V1490H612C336 1490 214 1386 214 1150V1056H20V752H214V0H614V752H832Z" transform="translate(302.209 1115) scale(0.12697680 -0.12697680)"/>
+    <path aria-label="e" fill="url(#word-dark)" d="M607 -24C885 -24 1109 129 1148 345H794C772 288 708 254 623 254C507 254 437 320 434 432H1152V539C1152 856 923 1080 599 1080C275 1080 46 851 46 528C46 205 278 -24 607 -24ZM437 656C451 743 513 794 610 794C707 794 769 743 783 656Z" transform="translate(412.933 1115) scale(0.12697680 -0.12697680)"/>
+    <path aria-label="F" fill="url(#word-cyan)" d="M80 0H496V536H1159V874H496V1138H1199V1490H80Z" transform="translate(564.543 1115) scale(0.12697680 -0.12697680)"/>
+    <path aria-label="l" fill="url(#word-cyan)" d="M486 1490H86V0H486Z" transform="translate(721.868 1115) scale(0.12697680 -0.12697680)"/>
+    <path aria-label="o" fill="url(#word-cyan)" d="M622 -24C966 -24 1198 190 1198 528C1198 865 966 1080 622 1080C279 1080 46 865 46 528C46 189 279 -24 622 -24ZM622 288C527 288 450 369 450 528C450 687 527 768 622 768C717 768 794 687 794 528C794 369 717 288 622 288Z" transform="translate(794.498 1115) scale(0.12697680 -0.12697680)"/>
+    <path aria-label="w" fill="url(#word-cyan)" d="M320 0H732L841 368C860 434 878 504 896 575C914 504 932 434 951 368L1060 0H1472L1796 1056H1368L1306 768C1280 647 1257 516 1233 386C1203 516 1173 647 1143 768L1070 1056H722L649 768C619 648 589 517 559 388C534 517 509 648 482 768L416 1056H-4Z" transform="translate(952.458 1115) scale(0.12697680 -0.12697680)"/>
+</g>
+</svg>
