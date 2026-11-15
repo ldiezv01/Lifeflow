@@ -1,0 +1,181 @@
+pantalla;control;tipo;x;y;ancho;alto;cumple_48;destino
+P01;Botón principal;Botón Destacado;16;680;358;56;sí;P04
+P01;Nav/Hoy;Navegación inferior;6;750;95;93;sí;
+P01;Nav/Agenda;Navegación inferior;100;750;95;93;sí;P02
+P01;Nav/Mis actividades;Navegación inferior;195;750;95;93;sí;P03
+P01;Nav/Mis rutinas;Navegación inferior;290;750;95;93;sí;P06
+P01;Botón acción;Botón Secundario;40;426;153;56;sí;
+P01;Botón Ver detalle;Botón Secundario;204;426;153;56;sí;
+P01;Botón acción;Botón Primario;40;631;151;56;sí;P01-V1
+P01;Botón Ver detalle;Botón Secundario;202;631;155;56;sí;
+P01;Botón acción;Botón Primario;40;836;151;56;sí;
+P01;Botón Ver detalle;Botón Secundario;202;836;155;56;sí;
+P01;Botón acción;Botón Primario;40;1041;151;56;sí;
+P01;Botón Ver detalle;Botón Secundario;202;1041;155;56;sí;P05
+P01;Botón acción;Botón Primario;40;1246;151;56;sí;
+P01;Botón Ver detalle;Botón Secundario;202;1246;155;56;sí;
+P02;Nav/Hoy;Navegación inferior;6;750;95;93;sí;P01
+P02;Nav/Agenda;Navegación inferior;100;750;95;93;sí;
+P02;Nav/Mis actividades;Navegación inferior;195;750;95;93;sí;P03
+P02;Nav/Mis rutinas;Navegación inferior;290;750;95;93;sí;P06
+P02;Botón Anterior;Botón Secundario;34;247;156;56;sí;
+P02;Botón Siguiente;Botón Secundario;201;247;156;56;sí;P02-V1
+P02;Fila — Tomar la medicación;Fila de actividad;16;373;358;125;sí;
+P02;Fila — Caminar 20 minutos;Fila de actividad;16;510;358;125;sí;
+P02;Fila — Paseo de la tarde;Fila de actividad;16;647;358;125;sí;P05
+P03;Botón principal;Botón Destacado;16;680;358;56;sí;P04
+P03;Nav/Hoy;Navegación inferior;6;750;95;93;sí;P01
+P03;Nav/Agenda;Navegación inferior;100;750;95;93;sí;P02
+P03;Nav/Mis actividades;Navegación inferior;195;750;95;93;sí;
+P03;Nav/Mis rutinas;Navegación inferior;290;750;95;93;sí;P06
+P03;Fila — Tomar la medicación;Fila de actividad;16;207;358;125;sí;
+P03;Fila — Caminar 20 minutos;Fila de actividad;16;344;358;125;sí;
+P03;Fila — Paseo de la tarde;Fila de actividad;16;481;358;125;sí;P05
+P03;Fila — Leer 15 minutos;Fila de actividad;16;618;358;125;sí;
+P03;Fila — Llamar al centro de salud;Fila de actividad;16;796;358;127;sí;
+P04;Botón Volver;Volver;16;52;102;48;sí;Atrás
+P04;Botón Cancelar;Botón Secundario;16;772;174;56;sí;Atrás
+P04;Botón Guardar;Botón Destacado;202;772;173;56;sí;P05-V1
+P04;Campo Nombre de la actividad;Campo de formulario;16;178;358;112;sí;
+P04;Campo Hora;Campo de formulario;16;306;358;134;sí;
+P04;Opción Diariamente;Opción de selección;16;486;358;56;sí (fila);
+P04;Opción Días concretos;Opción de selección;16;550;358;56;sí (fila);P04-V1
+P04;Opción Una sola vez;Opción de selección;16;614;358;56;sí (fila);P04-V4
+P04;Interruptor de recordatorio;Interruptor de recordatorio;16;686;358;95;sí (fila);
+P04;Campo Avisar;Campo de formulario;16;797;358;112;sí;
+P05;Botón Volver;Volver;16;52;102;48;sí;Atrás
+P05;Botón Editar;Botón Secundario;16;711;358;56;sí;P04-V3
+P06;Botón principal;Botón Destacado;16;680;358;56;sí;P07
+P06;Nav/Hoy;Navegación inferior;6;750;95;93;sí;P01
+P06;Nav/Agenda;Navegación inferior;100;750;95;93;sí;P02
+P06;Nav/Mis actividades;Navegación inferior;195;750;95;93;sí;P03
+P06;Nav/Mis rutinas;Navegación inferior;290;750;95;93;sí;
+P06;Tarjeta — Rutina Mañana;Tarjeta de rutina;16;192;358;223;sí;
+P06;Botón Editar rutina;Botón Secundario;34;342;323;56;sí;P07-V1
+P06;Tarjeta — Rutina Noche;Tarjeta de rutina;16;431;358;223;sí;
+P06;Botón Editar rutina;Botón Secundario;34;581;323;56;sí;
+P07;Botón Volver;Volver;16;52;102;48;sí;Atrás
+P07;Botón Cancelar;Botón Secundario;16;772;174;56;sí;Atrás
+P07;Botón Guardar;Botón Destacado;202;772;173;56;sí;Atrás
+P07;Campo Nombre de la rutina;Campo de formulario;16;178;358;112;sí;
+P07;Casilla — Paseo de la tarde;Opción de selección;16;373;358;72;sí (fila);
+P07;Casilla — Llamar al centro de salud;Opción de selección;16;453;358;91;sí (fila);
+P07;Casilla — Tomar la medicación;Opción de selección;16;552;358;92;sí (fila);
+P07;Casilla — Caminar 20 minutos;Opción de selección;16;652;358;92;sí (fila);
+P07;Casilla — Leer 15 minutos;Opción de selección;16;752;358;92;sí (fila);
+P01-V1;Botón principal;Botón Destacado;16;680;358;56;sí;P04
+P01-V1;Nav/Hoy;Navegación inferior;6;750;95;93;sí;P01
+P01-V1;Nav/Agenda;Navegación inferior;100;750;95;93;sí;P02
+P01-V1;Nav/Mis actividades;Navegación inferior;195;750;95;93;sí;P03
+P01-V1;Nav/Mis rutinas;Navegación inferior;290;750;95;93;sí;P06
+P01-V1;Botón acción;Botón Secundario;40;426;153;56;sí;
+P01-V1;Botón Ver detalle;Botón Secundario;204;426;153;56;sí;
+P01-V1;Botón acción;Botón Secundario;40;631;153;56;sí;P01
+P01-V1;Botón Ver detalle;Botón Secundario;204;631;153;56;sí;
+P01-V1;Botón acción;Botón Primario;40;836;151;56;sí;
+P01-V1;Botón Ver detalle;Botón Secundario;202;836;155;56;sí;
+P01-V1;Botón acción;Botón Primario;40;1041;151;56;sí;
+P01-V1;Botón Ver detalle;Botón Secundario;202;1041;155;56;sí;P05
+P01-V1;Botón acción;Botón Primario;40;1246;151;56;sí;
+P01-V1;Botón Ver detalle;Botón Secundario;202;1246;155;56;sí;
+P01-V1;Aviso con Deshacer;Aviso con Deshacer;16;566;358;90;sí;
+P01-V1;Botón Deshacer (aviso);Deshacer aviso;230;587;132;48;sí;P01
+P01-R1-Ini;Botón principal;Botón Destacado;16;680;358;56;sí;P04
+P01-R1-Ini;Nav/Hoy;Navegación inferior;6;750;95;93;sí;
+P01-R1-Ini;Nav/Agenda;Navegación inferior;100;750;95;93;sí;P02
+P01-R1-Ini;Nav/Mis actividades;Navegación inferior;195;750;95;93;sí;P03
+P01-R1-Ini;Nav/Mis rutinas;Navegación inferior;290;750;95;93;sí;P06
+P01-R1-Ini;Botón acción;Botón Secundario;40;426;153;56;sí;
+P01-R1-Ini;Botón Ver detalle;Botón Secundario;204;426;153;56;sí;
+P01-R1-Ini;Botón acción;Botón Primario;40;631;151;56;sí;
+P01-R1-Ini;Botón Ver detalle;Botón Secundario;202;631;155;56;sí;
+P01-R1-Ini;Botón acción;Botón Primario;40;836;151;56;sí;
+P01-R1-Ini;Botón Ver detalle;Botón Secundario;202;836;155;56;sí;
+P01-R1-Ini;Botón acción;Botón Primario;40;1041;151;56;sí;
+P01-R1-Ini;Botón Ver detalle;Botón Secundario;202;1041;155;56;sí;
+P01-R1-Gua;Botón principal;Botón Destacado;16;680;358;56;sí;P04
+P01-R1-Gua;Nav/Hoy;Navegación inferior;6;750;95;93;sí;P01
+P01-R1-Gua;Nav/Agenda;Navegación inferior;100;750;95;93;sí;P02
+P01-R1-Gua;Nav/Mis actividades;Navegación inferior;195;750;95;93;sí;P03
+P01-R1-Gua;Nav/Mis rutinas;Navegación inferior;290;750;95;93;sí;P06
+P01-R1-Gua;Botón acción;Botón Secundario;40;546;153;56;sí;
+P01-R1-Gua;Botón Ver detalle;Botón Secundario;204;546;153;56;sí;
+P01-R1-Gua;Botón acción;Botón Primario;40;751;151;56;sí;P01-V1
+P01-R1-Gua;Botón Ver detalle;Botón Secundario;202;751;155;56;sí;
+P01-R1-Gua;Botón acción;Botón Primario;40;956;151;56;sí;
+P01-R1-Gua;Botón Ver detalle;Botón Secundario;202;956;155;56;sí;
+P01-R1-Gua;Botón acción;Botón Primario;40;1161;151;56;sí;
+P01-R1-Gua;Botón Ver detalle;Botón Secundario;202;1161;155;56;sí;P05
+P01-R1-Gua;Botón acción;Botón Primario;40;1366;151;56;sí;
+P01-R1-Gua;Botón Ver detalle;Botón Secundario;202;1366;155;56;sí;
+P02-V1;Nav/Hoy;Navegación inferior;6;750;95;93;sí;P01
+P02-V1;Nav/Agenda;Navegación inferior;100;750;95;93;sí;P02
+P02-V1;Nav/Mis actividades;Navegación inferior;195;750;95;93;sí;P03
+P02-V1;Nav/Mis rutinas;Navegación inferior;290;750;95;93;sí;P06
+P02-V1;Botón Anterior;Botón Secundario;34;247;156;56;sí;P02
+P02-V1;Botón Siguiente;Botón Secundario;201;247;156;56;sí;
+P02-V1;Botón Nueva actividad (estado vacío);Botón Destacado;34;572;322;56;sí;P04
+P04-V1;Botón Volver;Volver;16;52;102;48;sí;Atrás
+P04-V1;Botón Cancelar;Botón Secundario;16;772;174;56;sí;Atrás
+P04-V1;Botón Guardar;Botón Destacado;202;772;173;56;sí;
+P04-V1;Campo Nombre de la actividad;Campo de formulario;16;178;358;112;sí;
+P04-V1;Campo Hora;Campo de formulario;16;306;358;134;sí;
+P04-V1;Opción Diariamente;Opción de selección;16;486;358;56;sí (fila);
+P04-V1;Opción Días concretos;Opción de selección;16;550;358;56;sí (fila);
+P04-V1;Opción Una sola vez;Opción de selección;16;614;358;56;sí (fila);
+P04-V1;Día Lun (seleccionado);Botón de día;16;716;80;52;sí;
+P04-V1;Día Mar;Botón de día;108;716;80;52;sí;
+P04-V1;Día Mié;Botón de día;200;716;80;52;sí;
+P04-V1;Día Jue (seleccionado);Botón de día;292;716;80;52;sí;
+P04-V1;Día Vie;Botón de día;16;780;80;52;sí;
+P04-V1;Día Sáb (seleccionado);Botón de día;108;780;80;52;sí;
+P04-V1;Día Dom;Botón de día;200;780;80;52;sí;
+P04-V1;Interruptor de recordatorio;Interruptor de recordatorio;16;878;358;95;sí (fila);
+P04-V1;Campo Avisar;Campo de formulario;16;989;358;112;sí;
+P04-V2;Botón Volver;Volver;16;52;102;48;sí;
+P04-V2;Botón Cancelar;Botón Secundario;16;772;174;56;sí;
+P04-V2;Botón Guardar;Botón Destacado;202;772;173;56;sí;
+P04-V2;Campo Nombre de la actividad;Campo de formulario;16;346;358;132;sí;
+P04-V2;Campo Hora;Campo de formulario;16;494;358;134;sí;
+P04-V2;Opción Diariamente;Opción de selección;16;674;358;56;sí (fila);
+P04-V2;Opción Días concretos;Opción de selección;16;738;358;56;sí (fila);
+P04-V2;Opción Una sola vez;Opción de selección;16;802;358;56;sí (fila);
+P04-V2;Interruptor de recordatorio;Interruptor de recordatorio;16;874;358;95;sí (fila);
+P04-V2;Campo Avisar;Campo de formulario;16;985;358;112;sí;
+P04-V3;Botón Volver;Volver;16;52;102;48;sí;Atrás
+P04-V3;Botón Cancelar;Botón Secundario;16;772;174;56;sí;Atrás
+P04-V3;Botón Guardar;Botón Destacado;202;772;173;56;sí;Atrás
+P04-V3;Campo Nombre de la actividad;Campo de formulario;16;178;358;112;sí;
+P04-V3;Campo Hora;Campo de formulario;16;306;358;134;sí;
+P04-V3;Opción Diariamente;Opción de selección;16;486;358;56;sí (fila);
+P04-V3;Opción Días concretos;Opción de selección;16;550;358;56;sí (fila);
+P04-V3;Opción Una sola vez;Opción de selección;16;614;358;56;sí (fila);
+P04-V3;Interruptor de recordatorio;Interruptor de recordatorio;16;686;358;95;sí (fila);
+P04-V3;Campo Avisar;Campo de formulario;16;797;358;112;sí;
+P04-V4;Botón Volver;Volver;16;52;102;48;sí;Atrás
+P04-V4;Botón Cancelar;Botón Secundario;16;772;174;56;sí;Atrás
+P04-V4;Botón Guardar;Botón Destacado;202;772;173;56;sí;
+P04-V4;Campo Nombre de la actividad;Campo de formulario;16;178;358;112;sí;
+P04-V4;Campo Hora;Campo de formulario;16;306;358;134;sí;
+P04-V4;Opción Diariamente;Opción de selección;16;486;358;56;sí (fila);
+P04-V4;Opción Días concretos;Opción de selección;16;550;358;56;sí (fila);
+P04-V4;Opción Una sola vez;Opción de selección;16;614;358;56;sí (fila);
+P04-V4;Campo Fecha;Campo de formulario;16;686;358;156;sí;
+P04-V4;Interruptor de recordatorio;Interruptor de recordatorio;16;858;358;95;sí (fila);
+P04-V4;Campo Avisar;Campo de formulario;16;969;358;112;sí;
+P05-V1;Botón Volver;Volver;16;52;149;48;sí;P01-R1-Gua
+P05-V1;Botón Editar;Botón Secundario;16;835;358;56;sí;P04-V3
+P07-V1;Botón Volver;Volver;16;52;102;48;sí;Atrás
+P07-V1;Botón Cancelar;Botón Secundario;16;772;174;56;sí;Atrás
+P07-V1;Botón Guardar;Botón Destacado;202;772;173;56;sí;Atrás
+P07-V1;Campo Nombre de la rutina;Campo de formulario;16;178;358;112;sí;
+P07-V1;Casilla — Paseo de la tarde;Opción de selección;16;373;358;72;sí (fila);
+P07-V1;Casilla — Llamar al centro de salud;Opción de selección;16;453;358;92;sí (fila);
+P07-V1;Casilla — Tomar la medicación (marcada);Opción de selección;16;553;358;91;sí (fila);
+P07-V1;Casilla — Caminar 20 minutos (marcada);Opción de selección;16;652;358;91;sí (fila);
+P07-V1;Casilla — Leer 15 minutos;Opción de selección;16;751;358;92;sí (fila);
+P01-V2;Nav/Hoy;Navegación inferior;2;609;194;96;sí;
+P01-V2;Nav/Agenda;Navegación inferior;195;609;194;99;sí;
+P01-V2;Nav/Mis actividades;Navegación inferior;2;708;194;138;sí;
+P01-V2;Nav/Mis rutinas;Navegación inferior;195;708;194;99;sí;
+P01-V2;Botón principal (Nueva actividad);Botón Destacado;12;519;366;80;sí;
