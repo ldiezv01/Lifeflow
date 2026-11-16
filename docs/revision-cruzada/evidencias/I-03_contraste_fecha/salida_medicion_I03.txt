@@ -1,0 +1,25 @@
+tamaños (188, 390, 3) (188, 390, 3)
+extensión de glifos: x 16 - 262  y 151 - 165
+píxeles de glifo (alpha>=0.9): 272  parcial (0.3-0.9): 668
+contraste mínimo bajo glifos núcleo: 4.64  (percentil 5: 4.68, mediana 4.89)
+contraste mínimo bajo cualquier píxel con cobertura>0.3: 4.61
+contraste mínimo del fondo en todo el rectángulo de la fecha: 4.36 ; máximo 5.15
+peor píxel núcleo en x=19 y=162 bg=[ 15 126 162]
+ tramo x  16- 70 : mín 4.64  (n=69)
+ tramo x  70-130 : mín 4.70  (n=57)
+ tramo x 130-190 : mín 4.79  (n=62)
+ tramo x 190-263 : mín 4.88  (n=84)
+ fila y 148-151 : mín 4.92
+ fila y 152-155 : mín 4.69
+ fila y 156-159 : mín 4.64
+ fila y 160-163 : mín 4.64
+degradado puro x=16  rgb=[ 15 126 161]  contraste=4.66
+degradado puro x=100  rgb=[ 28 120 176]  contraste=4.84
+degradado puro x=200  rgb=[ 45 112 193]  contraste=4.99
+degradado puro x=263  rgb=[ 68 105 204]  contraste=5.06
+degradado puro x=274  rgb=[ 72 104 205]  contraste=5.06
+B en (x=20,y=157): [ 14 125 161] cr=4.70
+método JPEG q=95: fg=[213 255 255] bg=[ 44 119 183] ratio=4.42
+método JPEG q=85: fg=[209 255 255] bg=[ 45 119 182] ratio=4.37
+método JPEG q=75: fg=[205 255 255] bg=[ 46 120 181] ratio=4.33
+método JPEG q=60: fg=[203 255 255] bg=[ 45 120 182] ratio=4.31

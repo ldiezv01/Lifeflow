@@ -1,0 +1,6 @@
+tamaño (80, 366, 3)  extensión contenido x 41 - 328  y 27 - 52
+núcleo (cobertura>=0.9)    n= 1787  contraste mín 4.64  p5 4.80  mediana 4.98
+cobertura>0.3              n= 2595  contraste mín 4.64  p5 4.80  mediana 4.98
+ x rel 41-91 mín 4.64
+ x rel 91-441 mín 4.75
+umbral: texto grande (32 px semibold) 3:1 ; referencia texto normal 4.5:1
