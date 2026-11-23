@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 
 import '../models/activity.dart';
+import '../theme/flow_theme.dart';
 import '../widgets/flow_widgets.dart';
 
 class ActivityForm extends StatefulWidget {
@@ -12,14 +14,28 @@ class ActivityForm extends StatefulWidget {
 }
 
 class _ActivityFormState extends State<ActivityForm> {
+  static const frequencies = ['Diariamente', 'Días concretos', 'Una sola vez'];
+  static const nameError = 'Escribe un nombre para la actividad.';
+  static const daysError = 'Elige al menos un día de la semana.';
   final form = GlobalKey<FormState>();
+  final nameKey = GlobalKey();
+  final daysKey = GlobalKey();
+  final nameFocus = FocusNode();
+  final firstDayFocus = FocusNode();
   late TextEditingController name;
   late TimeOfDay time;
   late DateTime date;
   late String frequency;
   late bool reminder;
   late Set<int> days;
-  String? error;
+
+  /// Tras el primer intento de guardar, los errores se muestran y se actualizan
+  /// al corregir; los datos escritos no se borran.
+  bool submitted = false;
+  String? get dayError =>
+      submitted && frequency == 'Días concretos' && days.isEmpty
+      ? daysError
+      : null;
   @override
   void initState() {
     super.initState();
@@ -35,16 +51,25 @@ class _ActivityFormState extends State<ActivityForm> {
   @override
   void dispose() {
     name.dispose();
+    nameFocus.dispose();
+    firstDayFocus.dispose();
     super.dispose();
   }
 
   void save() {
-    final valid = form.currentState!.validate();
-    if (!valid || (frequency == 'Días concretos' && days.isEmpty)) {
-      setState(
-        () => error =
-            'Revisa los campos indicados.${days.isEmpty && frequency == 'Días concretos' ? ' Selecciona al menos un día.' : ''}',
+    setState(() => submitted = true);
+    // Form.validate() ya anuncia el primer error de texto (o lo marca como
+    // liveRegion donde el sistema no admite anuncios): no se repite aquí.
+    final nameOk = form.currentState!.validate();
+    final daysOk = dayError == null;
+    if (!nameOk || !daysOk) {
+      // Vista y foco al primer campo con error; los datos escritos se conservan.
+      revealError(
+        context,
+        nameOk ? firstDayFocus : nameFocus,
+        nameOk ? daysKey : nameKey,
       );
+      if (nameOk) announce(context, daysError);
       return;
     }
     final a =
@@ -62,6 +87,40 @@ class _ActivityFormState extends State<ActivityForm> {
     a.date = date;
     a.reminder = reminder;
     Navigator.pop(context, a);
+  }
+
+  Widget frequencyOption(String f) {
+    final checked = frequency == f;
+    // Semantics explícito: OutlinedButton no expone rol de radio ni estado marcado.
+    return MergeSemantics(
+      child: Semantics(
+        inMutuallyExclusiveGroup: true,
+        checked: checked,
+        child: OutlinedButton.icon(
+          onPressed: () => setState(() => frequency = f),
+          // Elegida: borde grueso y negrita además del icono, no solo color.
+          style: OutlinedButton.styleFrom(
+            backgroundColor: checked ? const Color(0xFFDDF1FF) : Colors.white,
+            side: checked
+                ? const BorderSide(color: FlowTheme.teal, width: 3)
+                : const BorderSide(color: FlowTheme.muted),
+            textStyle: TextStyle(
+              fontFamily: 'LifeFlow',
+              fontSize: 16,
+              fontWeight: checked ? FontWeight.w800 : FontWeight.w500,
+            ),
+          ),
+          icon: ExcludeSemantics(
+            child: Icon(
+              checked
+                  ? Icons.radio_button_checked
+                  : Icons.radio_button_unchecked,
+            ),
+          ),
+          label: Text(f),
+        ),
+      ),
+    );
   }
 
   @override
@@ -88,26 +147,14 @@ class _ActivityFormState extends State<ActivityForm> {
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
                 ),
                 const SizedBox(height: 24),
-                if (error != null)
-                  Semantics(
-                    liveRegion: true,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: Text(
-                        'Error: $error',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
                 FlowField(
+                  key: nameKey,
                   controller: name,
+                  focusNode: nameFocus,
                   label: 'Nombre de la actividad',
-                  validator: (v) => v == null || v.trim().isEmpty
-                      ? 'Escribe el nombre de la actividad.'
-                      : null,
+                  isRequired: true,
+                  validator: (v) =>
+                      v == null || v.trim().isEmpty ? nameError : null,
                 ),
                 OutlinedButton.icon(
                   onPressed: () async {
@@ -128,29 +175,54 @@ class _ActivityFormState extends State<ActivityForm> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                const Text(
-                  'Frecuencia',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-                ),
-                ...['Diariamente', 'Días concretos', 'Una sola vez'].map(
-                  (f) => Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: OutlinedButton.icon(
-                      onPressed: () => setState(() => frequency = f),
-                      icon: Icon(
-                        frequency == f
-                            ? Icons.radio_button_checked
-                            : Icons.radio_button_unchecked,
+                // Grupo de opciones excluyentes; su encabezado visible lo nombra.
+                Semantics(
+                  container: true,
+                  role: SemanticsRole.radioGroup,
+                  explicitChildNodes: true,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Semantics(
+                        header: true,
+                        // Android (Flutter 3.50) solo marca encabezado si hay headingLevel.
+                        headingLevel: 2,
+                        child: const Text(
+                          'Frecuencia',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
-                      label: Text(f),
-                    ),
+                      for (final f in frequencies)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: frequencyOption(f),
+                        ),
+                    ],
                   ),
                 ),
                 if (frequency == 'Días concretos') ...[
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
+                  Semantics(
+                    key: daysKey,
+                    header: true,
+                    // Android (Flutter 3.50) solo marca encabezado si hay headingLevel.
+                    headingLevel: 2,
+                    child: const Text(
+                      'Días de la semana (obligatorio)',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  if (dayError != null) FieldError(dayError!),
                   ...List.generate(
                     7,
                     (i) => CheckboxListTile(
+                      focusNode: i == 0 ? firstDayFocus : null,
                       contentPadding: EdgeInsets.zero,
                       title: Text(
                         const [
@@ -191,7 +263,7 @@ class _ActivityFormState extends State<ActivityForm> {
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Recordatorio opcional'),
-                  subtitle: const Text('Solo simulación visual en esta fase'),
+                  subtitle: const Text('Esta versión no envía avisos al móvil'),
                   value: reminder,
                   onChanged: (v) => setState(() => reminder = v),
                 ),
@@ -220,10 +292,17 @@ class RoutineForm extends StatefulWidget {
 }
 
 class _RoutineFormState extends State<RoutineForm> {
+  static const nameError = 'Escribe un nombre para la rutina.';
+  static const activitiesError = 'Elige al menos una actividad para la rutina.';
   final form = GlobalKey<FormState>();
+  final nameKey = GlobalKey();
+  final activitiesKey = GlobalKey();
+  final nameFocus = FocusNode();
+  final firstActivityFocus = FocusNode();
   late TextEditingController name;
   late Set<int> ids;
-  String? error;
+  bool submitted = false;
+  String? get idsError => submitted && ids.isEmpty ? activitiesError : null;
   @override
   void initState() {
     super.initState();
@@ -234,7 +313,25 @@ class _RoutineFormState extends State<RoutineForm> {
   @override
   void dispose() {
     name.dispose();
+    nameFocus.dispose();
+    firstActivityFocus.dispose();
     super.dispose();
+  }
+
+  void save() {
+    setState(() => submitted = true);
+    final nameOk = form.currentState!.validate(); // anuncia el error de texto
+    final idsOk = idsError == null;
+    if (!nameOk || !idsOk) {
+      revealError(
+        context,
+        nameOk ? firstActivityFocus : nameFocus,
+        nameOk ? activitiesKey : nameKey,
+      );
+      if (nameOk) announce(context, activitiesError);
+      return;
+    }
+    Navigator.pop(context, Routine(name.text.trim(), ids));
   }
 
   @override
@@ -255,22 +352,33 @@ class _RoutineFormState extends State<RoutineForm> {
                   widget.routine == null ? 'Crear rutina' : 'Editar rutina',
                 ),
                 FlowField(
+                  key: nameKey,
                   controller: name,
+                  focusNode: nameFocus,
                   label: 'Nombre de la rutina',
-                  validator: (v) => v == null || v.trim().isEmpty
-                      ? 'Escribe el nombre de la rutina.'
-                      : null,
+                  isRequired: true,
+                  validator: (v) =>
+                      v == null || v.trim().isEmpty ? nameError : null,
                 ),
-                const Text(
-                  'Selecciona actividades existentes',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                Semantics(
+                  key: activitiesKey,
+                  header: true,
+                  // Android (Flutter 3.50) solo marca encabezado si hay headingLevel.
+                  headingLevel: 2,
+                  child: const Text(
+                    'Selecciona actividades existentes (obligatorio)',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                  ),
                 ),
+                // El error va junto a la lista afectada, no al final del formulario.
+                if (idsError != null) FieldError(idsError!),
                 if (widget.activities.isEmpty)
                   const Text(
                     'Crea primero una actividad desde Mis actividades.',
                   ),
-                ...widget.activities.map(
-                  (a) => CheckboxListTile(
+                for (final (i, a) in widget.activities.indexed)
+                  CheckboxListTile(
+                    focusNode: i == 0 ? firstActivityFocus : null,
                     contentPadding: EdgeInsets.zero,
                     title: Text(a.name),
                     subtitle: Text('${a.hour} · ${a.frequency}'),
@@ -278,40 +386,20 @@ class _RoutineFormState extends State<RoutineForm> {
                     onChanged: (v) =>
                         setState(() => v! ? ids.add(a.id) : ids.remove(a.id)),
                   ),
-                ),
                 const SizedBox(height: 16),
                 Semantics(
                   liveRegion: true,
                   child: Text(
-                    '${ids.length} actividades seleccionadas',
+                    plural(
+                      ids.length,
+                      'actividad seleccionada',
+                      'actividades seleccionadas',
+                    ),
                     style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
                 ),
-                if (error != null)
-                  Semantics(
-                    liveRegion: true,
-                    child: Text(
-                      'Error: $error',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
-                  ),
                 const SizedBox(height: 24),
-                PrimaryButton(
-                  'Guardar',
-                  icon: Icons.check,
-                  onPressed: () {
-                    final valid = form.currentState!.validate();
-                    if (!valid || ids.isEmpty) {
-                      setState(
-                        () => error = 'Escribe un nombre y selecciona al menos una actividad.',
-                      );
-                      return;
-                    }
-                    Navigator.pop(context, Routine(name.text.trim(), ids));
-                  },
-                ),
+                PrimaryButton('Guardar', icon: Icons.check, onPressed: save),
                 const SizedBox(height: 12),
                 OutlinedButton(
                   onPressed: () => Navigator.pop(context),
@@ -324,4 +412,21 @@ class _RoutineFormState extends State<RoutineForm> {
       ),
     ),
   );
+}
+
+/// Mueve el foco al primer control con error y desplaza la vista hasta su
+/// bloque (etiqueta incluida) para que el error se vea junto al campo (3.3.1).
+void revealError(BuildContext context, FocusNode focus, GlobalKey target) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (!context.mounted) return;
+    focus.requestFocus();
+    final ctx = target.currentContext;
+    if (ctx != null) {
+      Scrollable.ensureVisible(
+        ctx,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  });
 }

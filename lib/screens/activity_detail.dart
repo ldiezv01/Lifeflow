@@ -11,17 +11,34 @@ class ActivityDetail extends StatefulWidget {
     required this.onToggle,
     required this.onEdit,
     this.saved = false,
+    this.routine,
   });
   final Activity activity;
   final DateTime date;
   final VoidCallback onToggle;
-  final Future<void> Function() onEdit;
+  final Future<bool> Function() onEdit;
   final bool saved;
+
+  /// Nombre de la rutina a la que pertenece la actividad, si tiene.
+  final String? routine;
   @override
   State<ActivityDetail> createState() => _ActivityDetailState();
 }
 
 class _ActivityDetailState extends State<ActivityDetail> {
+  /// Confirmación visible tras crear o editar; liveRegion para que se anuncie.
+  late String? status = widget.saved ? 'Actividad guardada' : null;
+
+  /// Foco del botón Completar/Deshacer: al cambiar de estado, el botón cambia
+  /// de nombre y el foco debe seguir en él, sin saltar a otra parte.
+  final toggleFocus = FocusNode(debugLabel: 'Completar o deshacer');
+
+  @override
+  void dispose() {
+    toggleFocus.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final a = widget.activity;
@@ -37,14 +54,14 @@ class _ActivityDetailState extends State<ActivityDetail> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const PageHeading('Detalle de actividad'),
-                if (widget.saved)
+                if (status != null)
                   Semantics(
                     liveRegion: true,
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 24),
+                      padding: const EdgeInsets.only(bottom: 24),
                       child: Text(
-                        'Actividad guardada',
-                        style: TextStyle(
+                        status!,
+                        style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
                         ),
@@ -76,6 +93,7 @@ class _ActivityDetailState extends State<ActivityDetail> {
                   ),
                 if (a.frequency == 'Una sola vez')
                   Text('Fecha: ${dateLabel(a.date)} de ${a.date.year}'),
+                if (widget.routine != null) Text('Rutina: ${widget.routine}'),
                 const SizedBox(height: 16),
                 Text(
                   a.reminder
@@ -86,16 +104,26 @@ class _ActivityDetailState extends State<ActivityDetail> {
                 PrimaryButton(
                   a.completed(widget.date) ? 'Deshacer' : 'Completar',
                   icon: a.completed(widget.date) ? Icons.undo : Icons.check,
+                  focusNode: toggleFocus,
                   onPressed: () {
                     widget.onToggle();
                     setState(() {});
+                    // Tras reconstruir, el foco queda en el botón con su nuevo
+                    // nombre (Deshacer / Completar).
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) toggleFocus.requestFocus();
+                    });
                   },
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton(
                   onPressed: () async {
-                    await widget.onEdit();
-                    if (mounted) setState(() {});
+                    final saved = await widget.onEdit();
+                    if (mounted) {
+                      setState(() {
+                        if (saved) status = 'Cambios guardados';
+                      });
+                    }
                   },
                   child: const Text('Editar actividad'),
                 ),

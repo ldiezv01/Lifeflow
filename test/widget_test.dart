@@ -102,7 +102,7 @@ void main() {
       await tapText('Nueva actividad');
       await capture('04-nueva-actividad');
       await tapText('Guardar');
-      expect(find.text('Escribe el nombre de la actividad.'), findsOneWidget);
+      expect(find.text('Escribe un nombre para la actividad.'), findsOneWidget);
       await capture('04-error');
       await tester.enterText(
         find.byType(TextFormField).first,
@@ -167,7 +167,7 @@ void main() {
         await tapText('Volver');
       }
       await tapText('Agenda');
-      await tapText('Siguiente');
+      await tapText('Día siguiente');
       expect(find.text('No hay actividades para este día.'), findsOneWidget);
       await capture('02-agenda-vacia');
       await tester.pumpWidget(const SizedBox());

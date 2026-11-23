@@ -7,6 +7,7 @@ class FlowTheme {
   static const purple = Color(0xFF6331CE);
   static const green = Color(0xFF087D38);
   static const background = Color(0xFFF3F7FF);
+  static const error = Color(0xFFB3261E);
   static const gradient = LinearGradient(
     colors: [purple, Color(0xFF2455CF), teal],
   );
@@ -22,7 +23,7 @@ class FlowTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: teal,
       primary: teal,
-      error: const Color(0xFFB3261E),
+      error: error,
     ),
     textTheme: const TextTheme(
       bodyMedium: TextStyle(fontSize: 16, color: ink),
@@ -53,6 +54,22 @@ class FlowTheme {
       filled: true,
       fillColor: Colors.white,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      // Error visible sin depender solo del color: borde grueso y texto ≥14 px en negrita.
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: const BorderSide(color: error, width: 2),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: const BorderSide(color: error, width: 3),
+      ),
+      errorStyle: const TextStyle(
+        fontFamily: 'LifeFlow',
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+        color: error,
+      ),
+      errorMaxLines: 8,
       contentPadding: const EdgeInsets.all(18),
     ),
   );

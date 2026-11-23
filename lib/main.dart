@@ -3,16 +3,28 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'data/local_store.dart';
 import 'models/activity.dart';
 import 'theme/flow_theme.dart';
 import 'widgets/flow_widgets.dart';
 import 'screens/forms.dart';
 import 'screens/activity_detail.dart';
 
-void main() => runApp(const LifeFlowApp());
+/// Carga los datos guardados antes del primer fotograma: no se ven los de
+/// ejemplo y luego otros.
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(LifeFlowApp(saved: await LocalStore.load(), persist: true));
+}
 
 class LifeFlowApp extends StatelessWidget {
-  const LifeFlowApp({super.key});
+  const LifeFlowApp({super.key, this.saved, this.persist = false});
+
+  /// Datos cargados del almacenamiento; null usa los de ejemplo.
+  final LifeFlowData? saved;
+
+  /// Si guarda cada cambio de datos (falso en tests que no lo necesitan).
+  final bool persist;
   @override
   Widget build(BuildContext context) => MaterialApp(
     title: 'LifeFlow',
@@ -21,13 +33,15 @@ class LifeFlowApp extends StatelessWidget {
     locale: const Locale('es'),
     supportedLocales: const [Locale('es')],
     localizationsDelegates: GlobalMaterialLocalizations.delegates,
-    home: const HomeScreen(),
+    home: HomeScreen(saved: saved, persist: persist),
   );
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, this.now});
+  const HomeScreen({super.key, this.now, this.saved, this.persist = false});
   final DateTime Function()? now;
+  final LifeFlowData? saved;
+  final bool persist;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -78,6 +92,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     day = today;
     WidgetsBinding.instance.addObserver(this);
     scheduleMidnight();
+    final saved = widget.saved;
+    if (saved != null) {
+      activities = saved.activities;
+      routines = saved.routines;
+      return;
+    }
     activities = [
       Activity(
         id: 1,
@@ -108,12 +128,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     ];
   }
 
+  /// Guarda tras cada cambio de datos sin esperar: la UI no se bloquea y un
+  /// fallo de guardado solo se registra (RNF-R01).
+  void save() {
+    if (widget.persist) unawaited(LocalStore.save(activities, routines));
+  }
+
   void toggle(Activity a, DateTime d) {
     setState(() => a.toggle(d));
+    save();
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
+          // Tiempo suficiente para leer y usar «Deshacer» (2.2.1).
+          duration: const Duration(seconds: 10),
           content: Text(
             '${a.name}: ${a.completed(d) ? 'Completada' : 'Pendiente'}',
           ),
@@ -125,7 +154,29 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       );
   }
 
-  Future<void> edit(Activity a) async {
+  /// Confirmación visible; el SnackBar es región viva y el lector la anuncia.
+  void confirm(String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  /// Estado de la Agenda: fecha elegida y número de actividades.
+  String agendaStatus(DateTime d) {
+    final count = activities.where((a) => a.occurs(d)).length;
+    return '${dateLabel(d)}: ${plural(count, 'actividad', 'actividades')} este día';
+  }
+
+  /// Cambia el día de la Agenda y anuncia una vez la fecha y cuántas
+  /// actividades tiene, porque el cambio ocurre lejos del botón (4.1.3).
+  void changeDay(int delta) {
+    setState(() => day = DateTime(day.year, day.month, day.day + delta));
+    announce(context, agendaStatus(day));
+  }
+
+  /// Devuelve si se guardó; la confirmación la muestra el detalle en su
+  /// cabecera (un SnackBar taparía «Volver» con texto grande).
+  Future<bool> edit(Activity a) async {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     final result = await Navigator.push<Activity>(
       context,
@@ -133,7 +184,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         builder: (_) => ActivityForm(activity: a, date: day),
       ),
     );
-    if (result != null && mounted) setState(() {});
+    if (result != null && mounted) {
+      setState(() {});
+      save();
+    }
+    return result != null;
   }
 
   Future<void> detail(Activity a, DateTime d, {bool saved = false}) async {
@@ -145,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           activity: a,
           date: d,
           saved: saved,
+          routine: routineOf(a),
           onToggle: () => toggle(a, d),
           onEdit: () => edit(a),
         ),
@@ -163,6 +219,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     );
     if (result != null && mounted) {
       setState(() => activities.add(result));
+      save();
       await detail(result, index == 1 ? day : today, saved: true);
     }
   }
@@ -184,6 +241,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           r.ids = result.ids;
         }
       });
+      save();
+      confirm(
+        '${r == null ? 'Rutina creada' : 'Rutina guardada'}: ${result.name}',
+      );
     }
   }
 
@@ -192,15 +253,27 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     date: d,
     onToggle: () => toggle(a, d),
     onDetail: () => detail(a, d),
-    routine: routines
-        .where((r) => r.ids.contains(a.id))
-        .map((r) => r.name)
-        .firstOrNull,
+    routine: routineOf(a),
   );
-  Widget heading(String text) => Padding(
+
+  /// Rutina de la actividad (la primera que la incluye), o null.
+  String? routineOf(Activity a) => routines
+      .where((r) => r.ids.contains(a.id))
+      .map((r) => r.name)
+      .firstOrNull;
+
+  /// Encabezado de sección. Con [status], ese es su nombre accesible y, donde
+  /// el sistema no admite anuncios, es liveRegion (mismo texto que [announce]).
+  Widget heading(String text, {String? status}) => Padding(
     padding: const EdgeInsets.only(top: 8, bottom: 20),
     child: Semantics(
+      container: status != null,
       header: true,
+      // Android (Flutter 3.50) solo marca encabezado si hay headingLevel.
+      headingLevel: 2,
+      liveRegion: status != null && !MediaQuery.supportsAnnounceOf(context),
+      label: status,
+      excludeSemantics: status != null,
       child: Text(text, style: Theme.of(context).textTheme.titleLarge),
     ),
   );
@@ -247,26 +320,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             runSpacing: 12,
                             children: [
                               OutlinedButton.icon(
-                                onPressed: () => setState(
-                                  () => day = DateTime(
-                                    day.year,
-                                    day.month,
-                                    day.day - 1,
-                                  ),
-                                ),
+                                onPressed: () => changeDay(-1),
                                 icon: const Icon(Icons.chevron_left),
-                                label: const Text('Anterior'),
+                                label: const Text('Día anterior'),
                               ),
                               OutlinedButton.icon(
-                                onPressed: () => setState(
-                                  () => day = DateTime(
-                                    day.year,
-                                    day.month,
-                                    day.day + 1,
-                                  ),
-                                ),
+                                onPressed: () => changeDay(1),
                                 icon: const Icon(Icons.chevron_right),
-                                label: const Text('Siguiente'),
+                                label: const Text('Día siguiente'),
                               ),
                             ],
                           ),
@@ -274,7 +335,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         ],
                         if (index < 2) ...[
                           heading(
-                            '${visible.length} actividades ${index == 0 ? 'hoy' : 'este día'}',
+                            '${plural(visible.length, 'actividad', 'actividades')} ${index == 0 ? 'hoy' : 'este día'}',
+                            status: index == 1 ? agendaStatus(d) : null,
                           ),
                           if (visible.isEmpty)
                             Container(
@@ -323,7 +385,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                           PrimaryButton('Nueva actividad', onPressed: create),
                         ],
                         if (index == 3) ...[
-                          heading('${routines.length} rutinas para tu día'),
+                          heading(
+                            '${plural(routines.length, 'rutina', 'rutinas')} para tu día',
+                          ),
                           ...routines.map(
                             (r) => Container(
                               margin: const EdgeInsets.only(bottom: 20),
